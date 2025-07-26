@@ -10,12 +10,54 @@
   <div class="container">
     <div class="bank-card">
       <h2>Your Balance</h2>
-      <div class="balance-display">₹10,000</div>
+      <div id="balance-display" class="balance-display">₹10,000</div>
       <div class="buttons">
-        <button class="btn deposit">Deposit</button>
-        <button class="btn withdraw">Withdraw</button>
+        <button id="deposit-btn" class="btn deposit">Deposit</button>
+        <button id="withdraw-btn" class="btn withdraw">Withdraw</button>
       </div>
     </div>
   </div>
+
+  <script>
+    const balanceEl = document.getElementById('balance-display');
+    const depositBtn = document.getElementById('deposit-btn');
+    const withdrawBtn = document.getElementById('withdraw-btn');
+
+    function parseBalance() {
+      // Remove any non-digits (like currency symbol and commas) and parse to Number
+      return parseFloat(balanceEl.innerText.replace(/[^\d\.]/g, '')) || 0;
+    }
+
+    function updateBalance(newBal) {
+      // Format with commas and currency symbol
+      balanceEl.innerText = '₹' + newBal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    depositBtn.addEventListener('click', () => {
+      const amountStr = prompt('Enter amount to deposit:', '0');
+      const amount = parseFloat(amountStr);
+      if (isNaN(amount) || amount <= 0) {
+        alert('Please enter a valid positive number.');
+        return;
+      }
+      const current = parseBalance();
+      updateBalance(current + amount);
+    });
+
+    withdrawBtn.addEventListener('click', () => {
+      const amountStr = prompt('Enter amount to withdraw:', '0');
+      const amount = parseFloat(amountStr);
+      if (isNaN(amount) || amount <= 0) {
+        alert('Please enter a valid positive number.');
+        return;
+      }
+      const current = parseBalance();
+      if (amount > current) {
+        alert('Insufficient funds!');
+        return;
+      }
+      updateBalance(current - amount);
+    });
+  </script>
 </body>
 </html>
