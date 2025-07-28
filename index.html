@@ -24,12 +24,10 @@
     const withdrawBtn = document.getElementById('withdraw-btn');
 
     function parseBalance() {
-      // Remove any non-digits (like currency symbol and commas) and parse to Number
+      
       return parseFloat(balanceEl.innerText.replace(/[^\d\.]/g, '')) || 0;
     }
-
     function updateBalance(newBal) {
-      // Format with commas and currency symbol
       balanceEl.innerText = '₹' + newBal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
