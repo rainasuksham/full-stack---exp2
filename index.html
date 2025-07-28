@@ -19,43 +19,44 @@
   </div>
 
   <script>
-    const balanceEl = document.getElementById('balance-display');
-    const depositBtn = document.getElementById('deposit-btn');
-    const withdrawBtn = document.getElementById('withdraw-btn');
+  const balanceDisplay = document.getElementById("balance-display");
+  const depositBtn = document.getElementById("deposit-btn");
+  const withdrawBtn = document.getElementById("withdraw-btn");
 
-    function parseBalance() {
-      
-      return parseFloat(balanceEl.innerText.replace(/[^\d\.]/g, '')) || 0;
+  let balance = 10000;
+
+  
+  function showBalance() {
+    balanceDisplay.innerText = "₹" + balance.toFixed(2);
+  }
+
+  depositBtn.addEventListener("click", function () {
+    const amount = parseFloat(prompt("Enter amount to deposit:"));
+    if (isNaN(amount) || amount <= 0) {
+      alert("Please enter a valid positive amount.");
+      return;
     }
-    function updateBalance(newBal) {
-      balanceEl.innerText = '₹' + newBal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    balance += amount;
+    showBalance();
+  });
+
+  
+  withdrawBtn.addEventListener("click", function () {
+    const amount = parseFloat(prompt("Enter amount to withdraw:"));
+    if (isNaN(amount) || amount <= 0) {
+      alert("Please enter a valid positive amount.");
+      return;
     }
+    if (amount > balance) {
+      alert("Not enough balance!");
+      return;
+    }
+    balance -= amount;
+    showBalance();
+  });
 
-    depositBtn.addEventListener('click', () => {
-      const amountStr = prompt('Enter amount to deposit:', '0');
-      const amount = parseFloat(amountStr);
-      if (isNaN(amount) || amount <= 0) {
-        alert('Please enter a valid positive number.');
-        return;
-      }
-      const current = parseBalance();
-      updateBalance(current + amount);
-    });
+  showBalance();
+</script>
 
-    withdrawBtn.addEventListener('click', () => {
-      const amountStr = prompt('Enter amount to withdraw:', '0');
-      const amount = parseFloat(amountStr);
-      if (isNaN(amount) || amount <= 0) {
-        alert('Please enter a valid positive number.');
-        return;
-      }
-      const current = parseBalance();
-      if (amount > current) {
-        alert('Insufficient funds!');
-        return;
-      }
-      updateBalance(current - amount);
-    });
-  </script>
 </body>
 </html>
